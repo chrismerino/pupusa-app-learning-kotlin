@@ -1,9 +1,12 @@
 package com.chrismerino.pupusaapp_zero
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.widget.Button
+import com.chrismerino.pupusaapp_zero.DetalleOrdenFragment.Companion.CONTADOR_ARROZ
+import com.chrismerino.pupusaapp_zero.DetalleOrdenFragment.Companion.CONTADOR_MAIZ
 
 class MainActivity : AppCompatActivity() {
 
@@ -149,6 +152,27 @@ class MainActivity : AppCompatActivity() {
         val resource = pupusaStringResources[relleno]
         val text = this.resources.getString(resource!!, contador)
         botonesArroz[relleno]!!.text = text
+    }
+
+
+    private fun confirmarOrden() {
+        val intent = Intent(this, DetalleOrdenFragment::class.java)
+        val arroz = arrayListOf<Int>(
+            contadoresArroz[QUESO]!!,
+            contadoresArroz[FRIJOLES]!!,
+            contadoresArroz[REVUELTAS]!!)
+        val maiz = arrayListOf<Int>(
+            contadoresMaiz[QUESO]!!,
+            contadoresMaiz[FRIJOLES]!!,
+            contadoresMaiz[REVUELTAS]!!)
+
+
+
+        intent.putExtra(CONTADOR_ARROZ, arroz)
+        intent.putExtra(CONTADOR_MAIZ, maiz)
+
+        this.startActivity(intent)
+
     }
 
 
