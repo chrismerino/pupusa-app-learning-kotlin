@@ -3,16 +3,12 @@ package com.chrismerino.pupusaapp_zero
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import kotlinx.android.synthetic.*
-import sv.edu.bitlab.pupusap.Models.Orden
-import java.lang.StringBuilder
+import androidx.fragment.app.Fragment
 import java.text.DecimalFormat
-
 
 
 class DetalleOrdenFragment : Fragment() {
@@ -45,24 +41,36 @@ class DetalleOrdenFragment : Fragment() {
 
     }
 
+
+    override fun onCreateView(
+        // Inflate the layout for this fragment
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        this.inflater = inflater
+
+        return inflater.inflate(R.layout.fragment_detalle_orden, container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val arr = arroz + maiz
         var total = 0.0f
-        for((index, contador) in arr.withIndex()){
+        for ((index, contador) in arr.withIndex()) {
             val ids = lineItemsIDs[index]
             val detailTexview = activity!!.findViewById<TextView>(ids[0])
-            val priceTextView= activity!!.findViewById<TextView>(ids[1])
-            if(contador > 0){
+            val priceTextView = activity!!.findViewById<TextView>(ids[1])
+            if (contador > 0) {
                 val totalUnidad = contador * VALOR_PUPUSA
                 val descripcion = getDescripcion(index)
-                detailTexview.text = getString(R.string.pupusa_line_item_description,
-                    contador, descripcion)
+                detailTexview.text = getString(
+                    R.string.pupusa_line_item_description,
+                    contador, descripcion
+                )
                 total += totalUnidad
                 val precio = DecimalFormat("$#0.00").format(totalUnidad)
                 priceTextView.text = precio
-            } else{
+            } else {
                 detailTexview.visibility = View.GONE
                 priceTextView.visibility = View.GONE
             }
@@ -74,14 +82,6 @@ class DetalleOrdenFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        // Inflate the layout for this fragment
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        this.inflater = inflater
-
-        return inflater.inflate(R.layout.fragment_detalle_orden, container, false)
-    }
 
 
 
