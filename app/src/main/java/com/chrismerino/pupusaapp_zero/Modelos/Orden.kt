@@ -29,7 +29,7 @@ class Orden() : Parcelable {
         dest.writeInt(arroz[QUESO]!!)
         dest.writeInt(arroz[FRIJOLES]!!)
         dest.writeInt(arroz[REVUELTAS]!!)
-        dest.writeString(this.getFecha())
+//        dest.writeString(this.getFecha())
     }
 
     constructor(parcel: Parcel) : this() {
@@ -40,7 +40,7 @@ class Orden() : Parcelable {
         arroz[QUESO] = parcel.readInt()
         arroz[FRIJOLES] = parcel.readInt()
         arroz[REVUELTAS] = parcel.readInt()
-        setFecha(parcel.readString()!!)
+//        setFecha(parcel.readString()!!)
     }
 
     override fun describeContents(): Int {
@@ -59,16 +59,16 @@ class Orden() : Parcelable {
         return (totalArroz * precioUnidad) + (totalMaiz * precioUnidad)
     }
 
-    fun getFecha(): String {
-        val formatter = SimpleDateFormat(FORMATO_FECHA)
-        return formatter.format(fecha.time)
-    }
-
-    fun setFecha(fecha: String) {
-        val formatter = SimpleDateFormat(FORMATO_FECHA)
-        this.fecha = Calendar.getInstance()
-        this.fecha.time = formatter.parse(fecha)
-    }
+//    fun getFecha(): String {
+//        val formatter = SimpleDateFormat(FORMATO_FECHA)
+//        return formatter.format(fecha.time)
+//    }
+//
+//    fun setFecha(fecha: String) {
+//        val formatter = SimpleDateFormat(FORMATO_FECHA)
+//        this.fecha = Calendar.getInstance()
+//        this.fecha.time = formatter.parse(fecha)
+//    }
 
 
     companion object CREATOR : Parcelable.Creator<Orden> {

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorFondoFragment"
-        android:id="@+id/fragment_detalle_ordenxml"
+        android:id="@+id/fragment_detalle_orden_xml"
         tools:context=".DetalleOrdenFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout

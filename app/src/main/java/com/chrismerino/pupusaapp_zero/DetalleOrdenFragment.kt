@@ -9,22 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.android.synthetic.*
+import sv.edu.bitlab.pupusap.Models.Orden
 import java.lang.StringBuilder
 import java.text.DecimalFormat
-
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 
 
 class DetalleOrdenFragment : Fragment() {
 
 
-    var param1 : String? = null
-    var param2 : String? = null
     var arroz = arrayListOf<Int>()
     var maiz = arrayListOf<Int>()
+    var inflater: LayoutInflater? = null
 
 
     val lineItemsIDs = arrayOf(
@@ -41,10 +37,40 @@ class DetalleOrdenFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            arroz = it.getIntegerArrayList(CONTADOR_ARROZ)!!
+            maiz = it.getIntegerArrayList(CONTADOR_MAIZ)!!
         }
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val arr = arroz + maiz
+        var total = 0.0f
+        for((index, contador) in arr.withIndex()){
+            val ids = lineItemsIDs[index]
+            val detailTexview = activity!!.findViewById<TextView>(ids[0])
+            val priceTextView= activity!!.findViewById<TextView>(ids[1])
+            if(contador > 0){
+                val totalUnidad = contador * VALOR_PUPUSA
+                val descripcion = getDescripcion(index)
+                detailTexview.text = getString(R.string.pupusa_line_item_description,
+                    contador, descripcion)
+                total += totalUnidad
+                val precio = DecimalFormat("$#0.00").format(totalUnidad)
+                priceTextView.text = precio
+            } else{
+                detailTexview.visibility = View.GONE
+                priceTextView.visibility = View.GONE
+            }
+        }
+        val totalPrecio = activity!!.findViewById<TextView>(R.id.lineItemPriceTotal)
+        val precio = DecimalFormat("$#0.00").format(total)
+        totalPrecio.text = precio
+
 
     }
 
@@ -52,11 +78,7 @@ class DetalleOrdenFragment : Fragment() {
         // Inflate the layout for this fragment
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-//        val params = activity!!.intent.extras
-//        arroz = params!!.getIntegerArrayList(CONTADOR_ARROZ)!!
-//        maiz = params!!.getIntegerArrayList(CONTADOR_MAIZ)!!
-//        displayDetalle()
-
+        this.inflater = inflater
 
         return inflater.inflate(R.layout.fragment_detalle_orden, container, false)
     }
@@ -83,39 +105,14 @@ class DetalleOrdenFragment : Fragment() {
 
 
 
-    fun displayDetalle() {
-        val arr = arroz + maiz
-        var total = 0.0f
-        for((index, contador) in arr.withIndex()){
-            val ids = lineItemsIDs[index]
-            val detailTexview = activity!!.findViewById<TextView>(ids[0])
-            val priceTextView= activity!!.findViewById<TextView>(ids[1])
-            if(contador > 0){
-                val totalUnidad = contador * DetalleOrdenFragment.VALOR_PUPUSA
-                val descripcion = getDescripcion(index)
-                detailTexview.text = getString(R.string.pupusa_line_item_description,
-                    contador, descripcion)
-                total += totalUnidad
-                val precio = DecimalFormat("$#0.00").format(totalUnidad)
-                priceTextView.text = precio
-            } else{
-                detailTexview.visibility = View.GONE
-                priceTextView.visibility = View.GONE
-            }
-        }
-        val totalPrecio = activity!!.findViewById<TextView>(R.id.lineItemPriceTotal)
-        val precio = DecimalFormat("$#0.00").format(total)
-        totalPrecio.text = precio
-    }
-
-
     fun getDescripcion(index: Int): String {
         return when(index){
-            DetalleOrdenFragment.QUESO -> "Queso de arroz"
-            DetalleOrdenFragment.FRIJOLES -> "Frijol con queso de arroz"
-            DetalleOrdenFragment.REVUELTAS -> "Revueltas de arroz"
-            DetalleOrdenFragment.QUESO_MAIZ -> "Queso de maiz"
-            DetalleOrdenFragment.REVUELTAS_MAIZ -> "Revueltas de maiz"
+            QUESO -> "Queso de arroz"
+            FRIJOLES -> "Frijol con queso de arroz"
+            REVUELTAS -> "Revueltas de arroz"
+            QUESO_MAIZ -> "Queso de maiz"
+            FRIJOLES_MAIZ -> "Frijol con queso de maiz"
+            REVUELTAS_MAIZ -> "Revueltas de maiz"
             else -> throw RuntimeException("Pupusa no soportada")
         }
     }
@@ -134,15 +131,15 @@ class DetalleOrdenFragment : Fragment() {
 
 
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(arroz: ArrayList<Int>, maiz: ArrayList<Int>) =
             DetalleOrdenFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putIntegerArrayList(CONTADOR_ARROZ, arroz)
+                    putIntegerArrayList(CONTADOR_MAIZ, maiz)
                 }
             }
 
-
+        const val ORDEN = "ORDEN"
         const val QUESO = 0//3
         const val FRIJOLES = 1//4
         const val REVUELTAS = 2//5

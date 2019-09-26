@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ContenedorDetalleActivity">
 
+    <FrameLayout
+        android:id="@+id/contenedor_de_fragment_orden"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

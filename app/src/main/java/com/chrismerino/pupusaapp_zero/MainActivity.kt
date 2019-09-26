@@ -11,8 +11,6 @@ import com.chrismerino.pupusaapp_zero.DetalleOrdenFragment.Companion.CONTADOR_MA
 class MainActivity : AppCompatActivity() {
 
 
-
-
     // DECLARANDO CONTADORES
 
     var contadoresMaiz = hashMapOf(
@@ -64,18 +62,12 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
-
         botonEnviar = findViewById(R.id.botonEnviar)
         botonEnviar!!.setOnClickListener {
 
             // MANDAR A LLAMAR AL FRAGMENT
-            llamarFragment()
+            confirmarOrden()
         }
-
-
-
-
 
 
         // INICIALIZANDO COMPONENTES DE UI
@@ -84,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         frijolIzquierda = findViewById(R.id.frijolIzquierdaMaiz)
         revueltaIzquierda = findViewById(R.id.revueltasIzquierda)
 
-        botonesMaiz= hashMapOf(
+        botonesMaiz = hashMapOf(
             QUESO to quesoIzquierda!!,
             FRIJOLES to frijolIzquierda!!,
             REVUELTAS to revueltaIzquierda!!
@@ -99,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         frijolDerecha = findViewById(R.id.frijolIDerechaArroz)
         revueltasDerecha = findViewById(R.id.revueltasDerecha)
 
-        botonesArroz= hashMapOf(
+        botonesArroz = hashMapOf(
             QUESO to quesoDerecha!!,
             FRIJOLES to frijolDerecha!!,
             REVUELTAS to revueltasDerecha!!
@@ -113,15 +105,6 @@ class MainActivity : AppCompatActivity() {
         mostrarContadores()
 
     }
-
-    fun llamarFragment(){
-        val fragment = DetalleOrdenFragment.newInstance("Holi","Stranger")
-        val builder = supportFragmentManager
-            .beginTransaction()
-            .add(R.id.contenedor_main_activity, fragment)
-        builder.commit()
-    }
-
 
     fun mostrarContadores(){
         for ((key,value) in contadoresMaiz){
@@ -156,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun confirmarOrden() {
-        val intent = Intent(this, DetalleOrdenFragment::class.java)
+        val intent = Intent(this, ContenedorDetalleActivity::class.java)
         val arroz = arrayListOf<Int>(
             contadoresArroz[QUESO]!!,
             contadoresArroz[FRIJOLES]!!,
@@ -165,7 +148,6 @@ class MainActivity : AppCompatActivity() {
             contadoresMaiz[QUESO]!!,
             contadoresMaiz[FRIJOLES]!!,
             contadoresMaiz[REVUELTAS]!!)
-
 
 
         intent.putExtra(CONTADOR_ARROZ, arroz)
@@ -184,6 +166,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object{
+        const val ORDEN = "ORDEN"
         const val QUESO = "QUESO"
         const val FRIJOLES = "FRIJOLES"
         const val REVUELTAS = "REVUELTAS"
